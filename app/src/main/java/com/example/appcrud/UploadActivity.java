@@ -28,6 +28,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class UploadActivity extends AppCompatActivity {
@@ -129,13 +130,21 @@ public class UploadActivity extends AppCompatActivity {
 
         DataClass  dataClass = new DataClass(title, desc, lang, imageURL);
 
-        //chúng tôi đang thay đổi child từ title thành currentDate
+        //Thay đổi child từ title thành currentDate
         //bởi vì chúng tôi cũng sẽ cập nhật tiêu đề và nó có thể ảnh hưởng đến child value
-        String currentDate = DateFormat.getDateInstance().format(Calendar.getInstance().getTime());
+
+        // Lấy thời gian hiện tại
+        Calendar currentTime = Calendar.getInstance();
+
+        // Định dạng chuỗi ngày tháng và thời gian
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
+
+        // Chuyển đổi thời gian hiện tại thành chuỗi ngày tháng và thời gian
+        String currentDateTime = sdf.format(currentTime.getTime());
 
 
         //Lưu dữ liệu (dataClass) vào cơ sở dữ liệu Firebase Realtime Database.
-        FirebaseDatabase.getInstance().getReference("Android Tutorials").child(currentDate) //thay chỗ này
+        FirebaseDatabase.getInstance().getReference("Android Tutorials").child(currentDateTime) //thay chỗ này
                 .setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
